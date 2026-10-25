@@ -16,17 +16,21 @@ import {
   fetchOverallMetrics,
 } from './api';
 import { Header } from './components/Header';
+import { HomePage } from './components/HomePage';
 import { KpiGrid } from './components/KpiGrid';
 import { DayForecastChart } from './components/DayForecastChart';
+import { DaySlotsTable } from './components/DaySlotsTable';
 import { DailyMetricsChart } from './components/DailyMetricsChart';
 import { HourlyMetricsChart } from './components/HourlyMetricsChart';
 import { HorizonAnalysisChart } from './components/HorizonAnalysisChart';
 import { ProcurementBuffer } from './components/ProcurementBuffer';
 import { AssumptionsPanel } from './components/AssumptionsPanel';
+import { ArchitectureHub } from './components/ArchitectureHub';
 import { VintagesModal } from './components/VintagesModal';
 import { AlertCircle, Terminal } from 'lucide-react';
 
 export const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<string>('home');
   const [meta, setMeta] = useState<MetaData | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>('2026-01-02');
   const [startDate, setStartDate] = useState<string>('2026-01-02');
@@ -59,7 +63,7 @@ export const App: React.FC = () => {
       })
       .catch((err) => {
         console.error('Meta fetch failed:', err);
-        setError('Failed to connect to the backend API. Please ensure the server is running.');
+        setError('Failed to connect to the backend API. Please ensure the server is running on port 8000.');
       });
   }, []);
 
@@ -96,9 +100,11 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
-      {/* Top Navbar */}
+      {/* Top Navbar & Controls */}
       <Header
         meta={meta}
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
         selectedDate={selectedDate}
         onSelectDate={setSelectedDate}
         startDate={startDate}
@@ -125,45 +131,96 @@ export const App: React.FC = () => {
 
       {/* Main Content Dashboard */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-1 w-full">
-        {/* KPI Cards Grid */}
-        <section aria-label="Key Performance Indicators">
-          <KpiGrid metrics={overallMetrics?.metrics ?? null} isLoading={isLoading} />
-        </section>
-
-        {/* Selected Day Forecast vs Actual Chart */}
-        <section aria-label="Day Delivery Overview">
-          <DayForecastChart
-            dayData={dayForecast}
-            isLoading={isLoading}
-            onInspectSlot={(slot) => setInspectingSlot(slot)}
+        {/* Tab 1: Home Overview */}
+        {activeTab === 'home' && (
+          <HomePage
+            meta={meta}
+            overallMetrics={overallMetrics}
+            onNavigateTab={setActiveTab}
           />
-        </section>
+        )}
 
-        {/* Procurement Buffer Simulation Panel */}
-        <section aria-label="Procurement Decision Support">
-          <ProcurementBuffer dayData={dayForecast} />
-        </section>
+        {/* Tab 2: Day-Ahead Trading Studio */}
+        {activeTab === 'studio' && (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            {/* KPI Cards Grid */}
+            <section aria-label="Key Performance Indicators">
+              <KpiGrid metrics={overallMetrics?.metrics ?? null} isLoading={isLoading} />
+            </section>
 
-        {/* Two-column Analytical Charts: Daily Error Dynamics & Hourly Profile */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <section aria-label="Daily Error Dynamics">
-            <DailyMetricsChart data={daysMetrics} isLoading={isLoading} />
-          </section>
+            {/* Selected Day Forecast vs Actual Chart */}
+            <section aria-label="Day Delivery Overview">
+              <DayForecastChart
+                dayData={dayForecast}
+                isLoading={isLoading}
+                onInspectSlot={(slot) => setInspectingSlot(slot)}
+              />
+            </section>
 
-          <section aria-label="Hourly Error Profile">
-            <HourlyMetricsChart data={hoursMetrics} isLoading={isLoading} />
-          </section>
-        </div>
+            {/* Granular 48-Slot Trading Data Table with CSV Export */}
+            <section aria-label="Settlement Periods Table">
+              <DaySlotsTable
+                dayData={dayForecast}
+                onInspectSlot={(slot) => setInspectingSlot(slot)}
+              />
+            </section>
 
-        {/* Horizon Degradation Analysis */}
-        <section aria-label="Forecast Horizon Degradation">
-          <HorizonAnalysisChart data={horizonMetrics} isLoading={isLoading} />
-        </section>
+            {/* Assumptions Panel */}
+            <section aria-label="Assumptions and Methodology">
+              <AssumptionsPanel />
+            </section>
+          </div>
+        )}
 
-        {/* Assumptions & Methodology Notes */}
-        <section aria-label="Methodological Assumptions">
-          <AssumptionsPanel />
-        </section>
+        {/* Tab 3: Quantitative Error & Risk Analytics */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            {/* KPI Cards Grid */}
+            <section aria-label="Key Performance Indicators">
+              <KpiGrid metrics={overallMetrics?.metrics ?? null} isLoading={isLoading} />
+            </section>
+
+            {/* Horizon Degradation Analysis */}
+            <section aria-label="Forecast Horizon Degradation">
+              <HorizonAnalysisChart data={horizonMetrics} isLoading={isLoading} />
+            </section>
+
+            {/* Two-column Analytical Charts: Daily Error Dynamics & Hourly Profile */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <section aria-label="Daily Error Dynamics">
+                <DailyMetricsChart data={daysMetrics} isLoading={isLoading} />
+              </section>
+
+              <section aria-label="Hourly Error Profile">
+                <HourlyMetricsChart data={hoursMetrics} isLoading={isLoading} />
+              </section>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 4: Procurement Buffer Simulator */}
+        {activeTab === 'buffer' && (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            <section aria-label="Key Performance Indicators">
+              <KpiGrid metrics={overallMetrics?.metrics ?? null} isLoading={isLoading} />
+            </section>
+
+            <section aria-label="Procurement Decision Support">
+              <ProcurementBuffer dayData={dayForecast} />
+            </section>
+
+            <section aria-label="Assumptions and Methodology">
+              <AssumptionsPanel />
+            </section>
+          </div>
+        )}
+
+        {/* Tab 5: Technical Lead Architecture Hub */}
+        {activeTab === 'architecture' && (
+          <div className="animate-in fade-in duration-200">
+            <ArchitectureHub meta={meta} />
+          </div>
+        )}
       </main>
 
       {/* Vintage History Modal */}
