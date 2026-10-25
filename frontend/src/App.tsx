@@ -53,6 +53,8 @@ export const App: React.FC = () => {
           setSelectedDate(m.available_delivery_dates[0]);
           setStartDate(m.min_delivery_date);
           setEndDate(m.max_delivery_date);
+          setCutoffTime(m.default_cutoff_time);
+          setDaysBefore(m.default_days_before);
         }
       })
       .catch((err) => {
