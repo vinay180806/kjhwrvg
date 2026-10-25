@@ -5,7 +5,7 @@ A production-grade decision-support platform designed for UK electricity utility
 ## Repository and Deployment Links
 
 - **Public GitHub Repository:** https://github.com/vinay180806/kjhwrvg
-- **Live Deployment URL:** https://gb-wind-decision-support.vercel.app (or custom Vercel / Heroku instance)
+- **Live Deployment URL:** https://kjhwrvg.vercel.app
 - **Interactive API Documentation (Swagger/OpenAPI):** /docs (or http://localhost:8000/docs)
 
 ---
@@ -22,6 +22,7 @@ In compliance with the assignment specification, **AI tools (Google Antigravity 
 ├── .dockerignore                 # Specifies files excluded from Docker build context
 ├── .gitignore                    # Specifies untracked files for Git version control
 ├── docker-compose.yml            # Multi-container orchestration (FastAPI backend + Nginx frontend)
+├── package.json                  # Root npm build orchestrator for Vercel monorepo deployment
 ├── requirements.txt              # Top-level Python dependency specification for Vercel
 ├── vercel.json                   # Vercel serverless deployment routing and Python runtime config
 ├── api/

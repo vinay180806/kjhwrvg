@@ -1,0 +1,10 @@
+{
+  "name": "kjhwrvg",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GB Wind Generation Day-Ahead Decision Support System",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "vercel-build": "npm install --prefix frontend && npm run build --prefix frontend"
+  }
+}
