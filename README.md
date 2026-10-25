@@ -2,10 +2,11 @@
 
 A production-grade decision-support platform designed for UK electricity utility trading desks participating in the Great Britain (GB) day-ahead wholesale electricity market. The platform ingests national wind generation actuals and forecast vintages directly from Elexon BMRS (`FUELHH` and `WINDFOR`), establishes a strictly look-ahead-free decision gate aligned with market auction deadlines (default 09:00 London on Day D-1), quantifies historical forecast uncertainty (MAE, RMSE, bias, tail risks, and lead-time horizon degradation), and provides an interactive procurement buffer calculator to support optimal thermal generation and market purchase decisions for delivery dates in January 2026.
 
-## Live Application
+## Repository and Deployment Links
 
-- **Live Deployment URL:** `https://gb-wind-decision-support.vercel.app` *(or client custom deployment link)*
-- **API Documentation (Swagger/OpenAPI):** `/docs`
+- **Public GitHub Repository:** https://github.com/vinay180806/kjhwrvg
+- **Live Deployment URL:** https://gb-wind-decision-support.vercel.app (or custom Vercel / Heroku instance)
+- **Interactive API Documentation (Swagger/OpenAPI):** /docs (or http://localhost:8000/docs)
 
 ---
 
@@ -64,10 +65,13 @@ In compliance with the assignment specification, **AI tools (Google Antigravity 
         ├── types.ts              # TypeScript interfaces matching backend Pydantic schemas
         ├── vite-env.d.ts         # Vite client type definitions
         └── components/
+            ├── ArchitectureHub.tsx     # Technical lead architecture review hub with system schematics
             ├── AssumptionsPanel.tsx    # Explicit documentation of assumptions for traders
             ├── DailyMetricsChart.tsx   # Day-by-day MAE and signed bias error dynamics
             ├── DayForecastChart.tsx    # 48-slot delivery day chart with P10/P90 uncertainty band
+            ├── DaySlotsTable.tsx       # 48-slot granular settlement table with search and CSV export
             ├── Header.tsx              # Navigation bar with delivery date, cutoff, and gate pickers
+            ├── HomePage.tsx            # Executive overview, live operational ticker, pilot case summary
             ├── HorizonAnalysisChart.tsx# Accuracy degradation vs lead time (0-6h to 48h+)
             ├── HourlyMetricsChart.tsx  # Intraday error distribution across hours 00:00 to 23:00
             ├── KpiGrid.tsx             # Interactive KPI summary cards with formulas in tooltips
