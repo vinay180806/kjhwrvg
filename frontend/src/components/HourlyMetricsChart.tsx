@@ -19,8 +19,8 @@ interface HourlyMetricsChartProps {
 export const HourlyMetricsChart: React.FC<HourlyMetricsChartProps> = ({ data, isLoading }) => {
   if (isLoading || !data) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 h-80 flex items-center justify-center animate-pulse">
-        <span className="text-xs text-slate-500">Loading hourly error profile...</span>
+      <div className="bg-[#11212D] border border-[#253745] rounded-xl p-5 h-80 flex items-center justify-center animate-pulse">
+        <span className="text-xs text-[#9BA8AB]">Loading hourly error profile...</span>
       </div>
     );
   }
@@ -37,11 +37,11 @@ export const HourlyMetricsChart: React.FC<HourlyMetricsChartProps> = ({ data, is
     if (active && payload && payload.length) {
       const p = payload[0].payload;
       return (
-        <div className="bg-slate-900/95 border border-slate-700 rounded-xl p-3 shadow-xl backdrop-blur-md text-xs font-mono">
-          <div className="font-bold text-white mb-1.5 border-b border-slate-800 pb-1">{p.label} (London Time)</div>
-          <div className="text-cyan-400">Hourly MAE: <span className="font-bold">{p.mae !== null ? `${p.mae} MW` : 'N/A'}</span></div>
-          <div className="text-amber-400">Hourly Bias: <span className="font-bold">{p.bias !== null ? `${p.bias > 0 ? '+' : ''}${p.bias} MW` : 'N/A'}</span></div>
-          <div className="text-slate-400 text-[10px] mt-1">Sample Slots: {p.count}</div>
+        <div className="bg-[#06141B]/95 border border-[#4A5C6A] rounded-xl p-3 shadow-xl backdrop-blur-md text-xs font-mono">
+          <div className="font-bold text-white mb-1.5 border-b border-[#253745] pb-1">{p.label} (London Time)</div>
+          <div className="text-[#06B6D4]">Hourly MAE: <span className="font-bold">{p.mae !== null ? `${p.mae} MW` : 'N/A'}</span></div>
+          <div className="text-[#E2856E]">Hourly Bias: <span className="font-bold">{p.bias !== null ? `${p.bias > 0 ? '+' : ''}${p.bias} MW` : 'N/A'}</span></div>
+          <div className="text-[#9BA8AB] text-[10px] mt-1">Sample Slots: {p.count}</div>
         </div>
       );
     }
@@ -49,42 +49,42 @@ export const HourlyMetricsChart: React.FC<HourlyMetricsChartProps> = ({ data, is
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg flex flex-col justify-between">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
+    <div className="bg-[#11212D] border border-[#253745] rounded-xl p-5 shadow-lg flex flex-col justify-between">
+      <div className="flex items-center justify-between pb-3 border-b border-[#253745]">
         <div>
           <h3 className="text-sm font-bold text-white tracking-tight">Intraday Error Profile by Hour of Day</h3>
-          <p className="text-xs text-slate-400 mt-0.5">Identifies peak-demand and ramp hours with highest forecast uncertainty</p>
+          <p className="text-xs text-[#9BA8AB] mt-0.5">Identifies peak-demand and ramp hours with highest forecast uncertainty</p>
         </div>
-        <div className="text-xs font-mono text-slate-400">00:00 to 23:00</div>
+        <div className="text-xs font-mono text-[#9BA8AB]">00:00 to 23:00</div>
       </div>
 
-      <div className="h-64 w-full mt-3">
+      <div className="h-64 w-full mt-3 bg-[#06141B] rounded-lg p-2 border border-[#253745]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+            <CartesianGrid strokeDasharray="2 3" stroke="#253745" vertical={false} opacity={0.6} />
             <XAxis
               dataKey="hour"
-              stroke="#64748b"
-              tick={{ fontSize: 10, fill: '#64748b', fontFamily: 'monospace' }}
+              stroke="#9BA8AB"
+              tick={{ fontSize: 10, fill: '#9BA8AB', fontFamily: 'JetBrains Mono' }}
               interval={2}
               tickLine={false}
             />
             <YAxis
-              stroke="#64748b"
-              tick={{ fontSize: 10, fill: '#64748b', fontFamily: 'monospace' }}
+              stroke="#9BA8AB"
+              tick={{ fontSize: 10, fill: '#9BA8AB', fontFamily: 'JetBrains Mono' }}
               unit=" MW"
               width={55}
               tickLine={false}
               axisLine={false}
             />
             <Tooltip content={<CustomTooltip />} />
-            <ReferenceLine y={0} stroke="#475569" strokeDasharray="2 2" />
-            <Bar dataKey="mae" fill="#818cf8" radius={[4, 4, 0, 0]} fillOpacity={0.85} name="MAE" />
+            <ReferenceLine y={0} stroke="#4A5C6A" strokeDasharray="2 2" />
+            <Bar dataKey="mae" fill="#CCD0CF" radius={[3, 3, 0, 0]} fillOpacity={0.85} name="MAE" />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="text-[11px] text-slate-400 mt-2 text-center">
+      <div className="text-[11px] text-[#9BA8AB] mt-2 text-center font-mono">
         Higher MAE during morning ramp (07:00-09:00) and evening peak (17:00-19:00) requires conservative procurement buffers.
       </div>
     </div>

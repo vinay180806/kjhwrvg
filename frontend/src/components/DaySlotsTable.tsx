@@ -19,8 +19,8 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
       (s.settlement_period && s.settlement_period.toString().includes(searchTerm));
 
     if (!matchesSearch) return false;
-    if (filterMode === 'available') return s.forecast_mw !== null;
-    if (filterMode === 'missing') return s.forecast_mw === null;
+    if (filterMode === 'available') return s.forecast_mw != null;
+    if (filterMode === 'missing') return s.forecast_mw == null;
     return true;
   });
 
@@ -63,13 +63,13 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-4">
+    <div className="bg-[#11212D] border border-[#253745] rounded-xl p-6 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#253745] gap-4">
         <div>
           <h3 className="text-base font-bold text-white tracking-tight">
             Granular 48 Settlement Periods Data Grid
           </h3>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#9BA8AB] mt-0.5">
             Half-hour settlement breakdown for {dayData.delivery_date} with audit trail
           </p>
         </div>
@@ -77,26 +77,26 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
         <div className="flex flex-wrap items-center gap-2">
           {/* Search Box */}
           <div className="relative">
-            <Search className="h-3.5 w-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="h-3.5 w-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[#9BA8AB]" />
             <input
               type="text"
               placeholder="Filter time / period..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500 w-44"
+              className="pl-8 pr-3 py-1.5 bg-[#06141B] border border-[#253745] rounded text-xs font-mono text-white placeholder:text-[#9BA8AB]/60 focus:outline-none focus:border-[#10B981] w-44"
             />
           </div>
 
           {/* Filter Toggle */}
-          <div className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+          <div className="flex items-center bg-[#06141B] p-1 rounded border border-[#253745] text-xs">
             {(['all', 'available', 'missing'] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setFilterMode(mode)}
-                className={`px-2 py-0.5 rounded font-mono text-[11px] capitalize transition ${
+                className={`px-2 py-0.5 rounded font-mono text-[11px] capitalize transition cursor-pointer ${
                   filterMode === mode
-                    ? 'bg-slate-800 text-white font-bold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-[#253745] text-white font-bold'
+                    : 'text-[#9BA8AB] hover:text-white'
                 }`}
               >
                 {mode}
@@ -107,7 +107,7 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
           {/* Export Button */}
           <button
             onClick={exportCsv}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 text-xs font-mono transition cursor-pointer"
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/30 text-xs font-mono transition cursor-pointer"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export CSV</span>
@@ -116,9 +116,9 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
       </div>
 
       {/* Grid */}
-      <div className="mt-4 overflow-x-auto max-h-96">
+      <div className="mt-4 overflow-x-auto max-h-96 rounded-lg border border-[#253745]">
         <table className="w-full text-left text-xs font-mono">
-          <thead className="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
+          <thead className="bg-[#06141B] text-[#9BA8AB] sticky top-0 z-10 border-b border-[#253745]">
             <tr>
               <th className="py-2.5 px-3">Slot (UTC)</th>
               <th className="py-2.5 px-3">Period</th>
@@ -131,18 +131,18 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
               <th className="py-2.5 px-3 text-right">Audit</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60">
+          <tbody className="divide-y divide-[#253745]/60">
             {filteredSlots.map((s) => (
-              <tr key={s.start_time} className="hover:bg-slate-800/40 text-slate-300 transition">
+              <tr key={s.start_time} className="hover:bg-[#192c3a] text-[#CCD0CF] transition">
                 <td className="py-2.5 px-3 font-semibold text-white">
                   {s.start_time.slice(11, 16)}
                 </td>
-                <td className="py-2.5 px-3 text-slate-400">{s.settlement_period || '-'}</td>
+                <td className="py-2.5 px-3 text-[#9BA8AB]">{s.settlement_period || '-'}</td>
                 <td className="py-2.5 px-3">
                   {s.forecast_mw != null ? (
-                    <span className="font-bold text-cyan-400">{s.forecast_mw.toLocaleString()} MW</span>
+                    <span className="font-bold text-[#06B6D4]">{s.forecast_mw.toLocaleString()} MW</span>
                   ) : (
-                    <span className="inline-flex items-center space-x-1 text-amber-400 text-[11px]">
+                    <span className="inline-flex items-center space-x-1 text-[#E2856E] text-[11px]">
                       <AlertCircle className="h-3 w-3" />
                       <span>Missing</span>
                     </span>
@@ -150,35 +150,35 @@ export const DaySlotsTable: React.FC<DaySlotsTableProps> = ({ dayData, onInspect
                 </td>
                 <td className="py-2.5 px-3">
                   {s.actual_mw != null ? (
-                    <span className="font-bold text-emerald-400">{s.actual_mw.toLocaleString()} MW</span>
+                    <span className="font-bold text-[#10B981]">{s.actual_mw.toLocaleString()} MW</span>
                   ) : (
-                    <span className="text-slate-500">N/A</span>
+                    <span className="text-[#9BA8AB]">N/A</span>
                   )}
                 </td>
                 <td className="py-2.5 px-3">
                   {s.error_mw != null ? (
-                    <span className={`font-semibold ${s.error_mw > 0 ? 'text-amber-400' : 'text-indigo-400'}`}>
+                    <span className={`font-semibold ${s.error_mw > 0 ? 'text-[#E2856E]' : 'text-[#06B6D4]'}`}>
                       {s.error_mw > 0 ? `+${s.error_mw}` : s.error_mw} MW
                     </span>
                   ) : (
-                    <span className="text-slate-500">-</span>
+                    <span className="text-[#9BA8AB]">-</span>
                   )}
                 </td>
-                <td className="py-2.5 px-3 text-slate-400 text-[11px]">
-                  {s.lower_band_mw !== null && s.upper_band_mw !== null
+                <td className="py-2.5 px-3 text-[#9BA8AB] text-[11px]">
+                  {s.lower_band_mw != null && s.upper_band_mw != null
                     ? `${s.lower_band_mw} - ${s.upper_band_mw} MW`
                     : '-'}
                 </td>
-                <td className="py-2.5 px-3 text-slate-400 text-[11px]">
+                <td className="py-2.5 px-3 text-[#9BA8AB] text-[11px]">
                   {s.publish_time ? s.publish_time.slice(11, 16) : '-'}
                 </td>
-                <td className="py-2.5 px-3 text-slate-400 text-[11px]">
-                  {s.lead_hours !== null ? `${s.lead_hours} hrs` : '-'}
+                <td className="py-2.5 px-3 text-[#9BA8AB] text-[11px]">
+                  {s.lead_hours != null ? `${s.lead_hours} hrs` : '-'}
                 </td>
                 <td className="py-2.5 px-3 text-right">
                   <button
                     onClick={() => onInspectSlot(s.start_time)}
-                    className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition"
+                    className="p-1 rounded bg-[#06141B] hover:bg-[#253745] text-[#CCD0CF] hover:text-white transition cursor-pointer border border-[#253745]"
                     title="Inspect vintages for this slot"
                   >
                     <Eye className="h-3.5 w-3.5" />

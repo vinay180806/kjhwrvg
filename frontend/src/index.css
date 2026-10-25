@@ -4,22 +4,28 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100;
+    @apply bg-[#06141B] text-[#F0F4F6];
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-/* Custom scrollbars */
+/* Custom Stitch trading scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #06141B;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #253745;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #4A5C6A;
+}
+
+/* Tabular figures for all monospace numbers to prevent layout jitter */
+.tabular-nums {
+  font-variant-numeric: tabular-nums lining-nums;
 }
